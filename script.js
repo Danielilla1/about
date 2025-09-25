@@ -1,322 +1,178 @@
-// script.js (updated with battle pass and level system)
-document.addEventListener('DOMContentLoaded', function() {
-    // Create stars for background
-    createStars();
-    
-    // Initialize level system
-    let currentLevel = 1;
-    const maxLevel = 10;
-    
-    // Update level display
-    function updateLevelDisplay() {
-        document.getElementById('current-level').textContent = currentLevel;
-        document.getElementById('modal-level').textContent = currentLevel;
-        
-        // Update progress bar
-        const progress = (currentLevel / maxLevel) * 100;
-        document.getElementById('level-progress').textContent = Math.round(progress);
-        document.getElementById('progress-fill').style.width = `${progress}%`;
-    }
-    
-    // Initialize battle pass items
-    function initializeBattlePass() {
-        const battlePassGrid = document.querySelector('.battle-pass-grid');
-        battlePassGrid.innerHTML = '';
-        
-        const rewards = [
-            { icon: '⭐', name: 'Special Badge', reward: 'Exclusive badge' },
-            { icon: '🚀', name: 'Premium Access', reward: 'Early access to events' },
-            { icon: '🌌', name: 'Custom Avatar', reward: 'Custom profile avatar' },
-            { icon: '🏆', name: 'VIP Room', reward: 'Access to VIP channels' },
-            { icon: '💎', name: 'Gold Star', reward: 'Special gold star' },
-            { icon: '🌙', name: 'Night Mode', reward: 'Dark theme for life' },
-            { icon: '🌠', name: 'Cosmic Sound', reward: 'Special sound effects' },
-            { icon: '🌠', name: 'Space Theme', reward: 'Cosmic theme for profile' },
-            { icon: '🎁', name: 'Special Gift', reward: 'Monthly gift package' },
-            { icon: '👑', name: 'Royal Status', reward: 'Royal title in server' }
-        ];
-        
-        for (let i = 1; i <= maxLevel; i++) {
-            const item = document.createElement('div');
-            item.className = 'battle-pass-item';
-            item.innerHTML = `
-                <div class="item-icon">${rewards[i-1].icon}</div>
-                <div class="item-level">LEVEL ${i}</div>
-                <div class="item-name">${rewards[i-1].name}</div>
-                <div class="item-reward">${rewards[i-1].reward}</div>
-            `;
-            
-            // Mark unlocked levels
-            if (i <= currentLevel) {
-                item.classList.add('level-unlocked');
-            }
-            
-            battlePassGrid.appendChild(item);
-        }
-    }
-    
-    // Smooth scrolling for navigation links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
-        });
-    });
-    
-    // Add animation to elements when they come into view
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1
-    };
-    
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('animated');
-            }
-        });
-    }, observerOptions);
-    
-    // Observe sections for animation
-    document.querySelectorAll('section').forEach(section => {
-        observer.observe(section);
-    });
-    
-    // Payment modal functionality
-    const paymentModal = document.getElementById('payment-modal');
-    const closeBtn = document.querySelector('.close');
-    const buyButtons = document.querySelectorAll('.buy-btn');
-    const paymentCards = document.querySelectorAll('.payment-card');
-    const confirmPaymentBtn = document.getElementById('confirm-payment');
-    
-    let selectedPlanet = null;
-    let selectedMethod = null;
-    
-    // Open modal when buy button is clicked
-    buyButtons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Get planet data
-            selectedPlanet = {
-                name: this.previousElementSibling.previousElementSibling.textContent,
-                icon: this.previousElementSibling.previousElementSibling.previousElementSibling.textContent,
-                price: this.getAttribute('data-price')
-            };
-            
-            // Update modal content
-            document.getElementById('modal-planet-name').textContent = selectedPlanet.name;
-            document.getElementById('modal-planet-icon').textContent = selectedPlanet.icon;
-            document.getElementById('modal-planet-price').textContent = formatPrice(selectedPlanet.price);
-            
-            // Show modal
-            paymentModal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        });
-    });
-    
-    // Close modal when close button is clicked
-    closeBtn.addEventListener('click', function() {
-        paymentModal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling
-    });
-    
-    // Close modal when clicking outside
-    window.addEventListener('click', function(event) {
-        if (event.target === paymentModal) {
-            paymentModal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Enable scrolling
-        }
-    });
-    
-    // Select payment method
-    paymentCards.forEach(card => {
-        card.addEventListener('click', function() {
-            // Remove selected class from all cards
-            paymentCards.forEach(c => c.classList.remove('selected'));
-            
-            // Add selected class to clicked card
-            this.classList.add('selected');
-            
-            // Set selected method
-            selectedMethod = this.getAttribute('data-method');
-        });
-    });
-    
-    // Confirm payment
-    confirmPaymentBtn.addEventListener('click', function() {
-        if (!selectedMethod) {
-            alert('Please select a payment method');
-            return;
-        }
-        
-        // Show confirmation
-        alert(`Payment confirmed with ${selectedMethod.charAt(0).toUpperCase() + selectedMethod.slice(1)}! Your planet is on its way.`);
-        
-        // Close modal
-        paymentModal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling
-        
-        // Reset selections
-        selectedPlanet = null;
-        selectedMethod = null;
-        paymentCards.forEach(c => c.classList.remove('selected'));
-    });
-    
-    // Button click effects
-    const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .btn-premium');
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            // Create travel effect
-            const travelEffect = document.createElement('div');
-            travelEffect.className = 'travel-effect';
-            this.appendChild(travelEffect);
-            
-            // Remove effect after animation completes
-            setTimeout(() => {
-                travelEffect.remove();
-            }, 600);
-            
-            // Add ripple effect
-            const ripple = document.createElement('span');
-            ripple.className = 'ripple';
-            this.appendChild(ripple);
-            
-            // Position ripple at click location
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size/2;
-            const y = e.clientY - rect.top - size/2;
-            
-            ripple.style.width = ripple.style.height = `${size}px`;
-            ripple.style.left = `${x}px`;
-            ripple.style.top = `${y}px`;
-            
-            // Remove ripple after animation
-            setTimeout(() => {
-                ripple.remove();
-            }, 600);
-        });
-    });
-    
-    // Premium modal functionality
-    const premiumModal = document.getElementById('premium-modal');
-    const premiumButtons = document.querySelectorAll('.btn-premium');
-    const premiumCloseBtn = document.querySelector('.premium-modal .close');
-    const confirmPremiumBtn = document.getElementById('confirm-premium');
-    const premiumPaymentCards = document.querySelectorAll('.premium-modal .payment-card');
-    
-    let selectedPremiumMethod = null;
-    
-    // Open premium modal when premium button is clicked
-    premiumButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            // Initialize battle pass and level display
-            initializeBattlePass();
-            updateLevelDisplay();
-            
-            // Show premium modal
-            premiumModal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
-        });
-    });
-    
-    // Close premium modal when close button is clicked
-    premiumCloseBtn.addEventListener('click', function() {
-        premiumModal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling
-    });
-    
-    // Close premium modal when clicking outside
-    window.addEventListener('click', function(event) {
-        if (event.target === premiumModal) {
-            premiumModal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Enable scrolling
-        }
-    });
-    
-    // Select premium payment method
-    premiumPaymentCards.forEach(card => {
-        card.addEventListener('click', function() {
-            // Remove selected class from all cards
-            premiumPaymentCards.forEach(c => c.classList.remove('selected'));
-            
-            // Add selected class to clicked card
-            this.classList.add('selected');
-            
-            // Set selected method
-            selectedPremiumMethod = this.getAttribute('data-method');
-        });
-    });
-    
-    // Confirm premium subscription
-    confirmPremiumBtn.addEventListener('click', function() {
-        if (!selectedPremiumMethod) {
-            alert('Please select a payment method');
-            return;
-        }
-        
-        // Show confirmation
-        alert(`Premium subscription confirmed with ${selectedPremiumMethod.charAt(0).toUpperCase() + selectedPremiumMethod.slice(1)}! Enjoy all premium benefits.`);
-        
-        // Close modal
-        premiumModal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling
-        
-        // Reset selections
-        selectedPremiumMethod = null;
-        premiumPaymentCards.forEach(c => c.classList.remove('selected'));
-    });
-    
-    // Initialize level display
-    updateLevelDisplay();
-});
+/* styles.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
-function createStars() {
-    const starsContainer = document.getElementById('stars');
-    const starCount = 200;
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.navbar-container {
+    position: relative;
+    width: 100%;
+    max-width: 800px;
+    z-index: 10;
+}
+
+.navbar-trigger {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 50px;
+    padding: 15px 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 180px;
+    margin: 0 auto;
+}
+
+.navbar-trigger:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-trigger span {
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.navbar-trigger i {
+    color: white;
+    font-size: 24px;
+}
+
+.navbar-reveal {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transform: translateY(-20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+}
+
+.navbar-reveal.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+.navbar-content {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
+}
+
+.nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+    padding: 15px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 100px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.nav-icon:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.nav-icon i {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+
+.nav-icon span {
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .navbar-trigger {
+        padding: 12px 25px;
+        width: 150px;
+    }
     
-    for (let i = 0; i < starCount; i++) {
-        const star = document.createElement('div');
-        star.classList.add('star');
-        
-        // Random position
-        const x = Math.random() * 100;
-        const y = Math.random() * 100;
-        
-        // Random size
-        const size = Math.random() * 3;
-        
-        // Random animation duration and delay
-        const duration = 2 + Math.random() * 5;
-        const delay = Math.random() * 5;
-        const opacity = 0.2 + Math.random() * 0.8;
-        
-        // Add movement properties
-        const moveX = (Math.random() - 0.5) * 20;
-        const moveY = (Math.random() - 0.5) * 20;
-        const moveDuration = 5 + Math.random() * 10;
-        
-        star.style.left = `${x}%`;
-        star.style.top = `${y}%`;
-        star.style.width = `${size}px`;
-        star.style.height = `${size}px`;
-        star.style.setProperty('--duration', `${duration}s`);
-        star.style.setProperty('--opacity', opacity);
-        star.style.setProperty('--move-x', `${moveX}px`);
-        star.style.setProperty('--move-y', `${moveY}px`);
-        star.style.setProperty('--move-duration', `${moveDuration}s`);
-        star.style.animationDelay = `${delay}s`;
-        
-        starsContainer.appendChild(star);
+    .navbar-trigger span {
+        font-size: 16px;
+    }
+    
+    .navbar-content {
+        gap: 15px;
+    }
+    
+    .nav-icon {
+        min-width: 80px;
+        padding: 12px;
+    }
+    
+    .nav-icon i {
+        font-size: 24px;
+    }
+    
+    .nav-icon span {
+        font-size: 12px;
     }
 }
 
-function formatPrice(price) {
-    // Convert to trillions format
-    const trillions = parseInt(price) / 1000000000000;
-    return `${trillions.toFixed(1)} Trillion Credits`;
+@media (max-width: 480px) {
+    .navbar-trigger {
+        padding: 10px 20px;
+        width: 130px;
+    }
+    
+    .navbar-trigger span {
+        font-size: 14px;
+    }
+    
+    .navbar-content {
+        gap: 10px;
+    }
+    
+    .nav-icon {
+        min-width: 70px;
+        padding: 10px;
+    }
+    
+    .nav-icon i {
+        font-size: 20px;
+    }
+    
+    .nav-icon span {
+        font-size: 10px;
+    }
 }
