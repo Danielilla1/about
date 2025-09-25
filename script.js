@@ -1,170 +1,196 @@
-// Update time every second
-function showTime() {
-    document.getElementById('currentTime').innerHTML = new Date().toUTCString();
-}
-showTime();
-setInterval(function () {
-    showTime();
-}, 1000);
-
-// Handle form submission
-document.getElementById('submit-btn').addEventListener('click', function() {
-    const userInput = document.getElementById('user-input');
-    const responseElement = document.getElementById('ai-response');
+// script.js (updated with scrolling support)
+document.addEventListener('DOMContentLoaded', function() {
+    // Create stars for background
+    createStars();
     
-    if (userInput.value.trim() === '') return;
-    
-    // Add typing animation
-    responseElement.innerHTML = '';
-    responseElement.classList.add('typing');
-    
-    // Simulate AI processing
-    setTimeout(() => {
-        // Remove typing animation
-        responseElement.classList.remove('typing');
-        
-        // Generate response based on input
-        const responses = [
-            "I've analyzed your query about \"" + userInput.value + "\". Based on YouTube trends, I can provide insights on this topic.",
-            "Thanks for asking about \"" + userInput.value + "\". I've found relevant YouTube content that might help you understand this better.",
-            "Regarding \"" + userInput.value + "\", I've processed your request and found popular videos discussing this subject.",
-            "I've received your question about \"" + userInput.value + "\". Here's what YouTube data shows: This is a trending topic with significant engagement.",
-            "Great question about \"" + userInput.value + "\"! Based on YouTube analytics, I can share the most relevant content and insights."
-        ];
-        
-        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
-        responseElement.innerHTML = randomResponse;
-        
-        // Add animation to response
-        responseElement.style.opacity = '0';
-        responseElement.style.transform = 'translateY(10px)';
-        setTimeout(() => {
-            responseElement.style.transition = 'all 0.5s ease';
-            responseElement.style.opacity = '1';
-            responseElement.style.transform = 'translateY(0)';
-        }, 10);
-        
-        // Clear input
-        userInput.value = '';
-    }, 1500);
-});
-
-// Add Enter key support
-document.getElementById('user-input').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-        document.getElementById('submit-btn').click();
-    }
-});
-
-// Add animation to feature cards on scroll
-const featureCards = document.querySelectorAll('.feature-card');
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'translateY(0)';
-        }
-    });
-}, { threshold: 0.1 });
-
-featureCards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'translateY(20px)';
-    card.style.transition = 'all 0.6s ease';
-    observer.observe(card);
-});
-
-// Add hover effect to input field
-const inputField = document.getElementById('user-input');
-inputField.addEventListener('focus', function() {
-    this.style.background = 'rgba(255, 255, 255, 0.15)';
-    this.style.boxShadow = '0 0 0 2px #ff0000';
-});
-
-inputField.addEventListener('blur', function() {
-    this.style.background = 'rgba(255, 255, 255, 0.1)';
-    this.style.boxShadow = 'none';
-});
-
-// Add hover effect to video cards
-const videoCards = document.querySelectorAll('.video-card');
-videoCards.forEach(card => {
-    card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-5px)';
-    });
-    
-    card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0)';
-    });
-});
-
-// YouTube API Integration
-const API_KEY = 'YOUR_YOUTUBE_API_KEY'; // Replace with your actual YouTube API key
-const TRENDING_VIDEOS_URL = `https://www.googleapis.com/youtube/v3/videos?part=snippet,statistics&chart=mostPopular&regionCode=US&maxResults=6&key=${API_KEY}`;
-
-// Function to fetch trending videos
-async function fetchTrendingVideos() {
-    const videosContainer = document.getElementById('trending-videos');
-    
-    // Show loading state
-    videosContainer.innerHTML = '<div class="loading">Loading trending videos...</div>';
-    
-    try {
-        const response = await fetch(TRENDING_VIDEOS_URL);
-        
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        
-        if (!data.items || data.items.length === 0) {
-            throw new Error('No videos found');
-        }
-        
-        // Clear loading state
-        videosContainer.innerHTML = '';
-        
-        // Create video cards
-        data.items.forEach(video => {
-            const videoCard = document.createElement('div');
-            videoCard.className = 'video-card';
-            
-            const snippet = video.snippet;
-            const statistics = video.statistics;
-            
-            videoCard.innerHTML = `
-                <div class="thumbnail">
-                    <i class="fas fa-play-circle"></i>
-                </div>
-                <div class="video-info">
-                    <h3>${snippet.title}</h3>
-                    <p>${snippet.channelTitle}</p>
-                    <p>${parseInt(statistics.viewCount).toLocaleString()} views • ${formatDate(snippet.publishedAt)}</p>
-                </div>
-            `;
-            
-            videosContainer.appendChild(videoCard);
+    // Smooth scrolling for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
         });
+    });
+    
+    // Add animation to elements when they come into view
+    const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animated');
+            }
+        });
+    }, observerOptions);
+    
+    // Observe sections for animation
+    document.querySelectorAll('section').forEach(section => {
+        observer.observe(section);
+    });
+    
+    // Payment modal functionality
+    const modal = document.getElementById('payment-modal');
+    const closeBtn = document.querySelector('.close');
+    const buyButtons = document.querySelectorAll('.buy-btn');
+    const paymentCards = document.querySelectorAll('.payment-card');
+    const confirmPaymentBtn = document.getElementById('confirm-payment');
+    
+    let selectedPlanet = null;
+    let selectedMethod = null;
+    
+    // Open modal when buy button is clicked
+    buyButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Get planet data
+            selectedPlanet = {
+                name: this.previousElementSibling.previousElementSibling.textContent,
+                price: this.getAttribute('data-price')
+            };
+            
+            // Update modal content
+            document.getElementById('modal-planet-name').textContent = selectedPlanet.name;
+            document.getElementById('modal-planet-price').textContent = formatPrice(selectedPlanet.price);
+            
+            // Show modal
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling on body
+        });
+    });
+    
+    // Close modal when close button is clicked
+    closeBtn.addEventListener('click', function() {
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scrolling on body
+    });
+    
+    // Close modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Enable scrolling on body
+        }
+    });
+    
+    // Select payment method
+    paymentCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            paymentCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Set selected method
+            selectedMethod = this.getAttribute('data-method');
+        });
+    });
+    
+    // Confirm payment
+    confirmPaymentBtn.addEventListener('click', function() {
+        if (!selectedMethod) {
+            alert('Please select a payment method');
+            return;
+        }
         
-    } catch (error) {
-        console.error('Error fetching videos:', error);
-        videosContainer.innerHTML = '<div class="error">Failed to load trending videos. Please try again later.</div>';
+        // Show confirmation
+        alert(`Payment confirmed with ${selectedMethod.charAt(0).toUpperCase() + selectedMethod.slice(1)}! Your planet is on its way.`);
+        
+        // Close modal
+        modal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scrolling on body
+        
+        // Reset selections
+        selectedPlanet = null;
+        selectedMethod = null;
+        paymentCards.forEach(c => c.classList.remove('selected'));
+    });
+    
+    // Button click effects
+    const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
+    buttons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            // Create travel effect
+            const travelEffect = document.createElement('div');
+            travelEffect.className = 'travel-effect';
+            this.appendChild(travelEffect);
+            
+            // Remove effect after animation completes
+            setTimeout(() => {
+                travelEffect.remove();
+            }, 600);
+            
+            // Add ripple effect
+            const ripple = document.createElement('span');
+            ripple.className = 'ripple';
+            this.appendChild(ripple);
+            
+            // Position ripple at click location
+            const rect = this.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size/2;
+            const y = e.clientY - rect.top - size/2;
+            
+            ripple.style.width = ripple.style.height = `${size}px`;
+            ripple.style.left = `${x}px`;
+            ripple.style.top = `${y}px`;
+            
+            // Remove ripple after animation
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    });
+});
+
+function createStars() {
+    const starsContainer = document.getElementById('stars');
+    const starCount = 200;
+    
+    for (let i = 0; i < starCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+        
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+        
+        // Random size
+        const size = Math.random() * 3;
+        
+        // Random animation duration and delay
+        const duration = 2 + Math.random() * 5;
+        const delay = Math.random() * 5;
+        const opacity = 0.2 + Math.random() * 0.8;
+        
+        // Add movement properties
+        const moveX = (Math.random() - 0.5) * 20;
+        const moveY = (Math.random() - 0.5) * 20;
+        const moveDuration = 5 + Math.random() * 10;
+        
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.setProperty('--duration', `${duration}s`);
+        star.style.setProperty('--opacity', opacity);
+        star.style.setProperty('--move-x', `${moveX}px`);
+        star.style.setProperty('--move-y', `${moveY}px`);
+        star.style.setProperty('--move-duration', `${moveDuration}s`);
+        star.style.animationDelay = `${delay}s`;
+        
+        starsContainer.appendChild(star);
     }
 }
 
-// Helper function to format date
-function formatDate(dateString) {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diffInDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
-    
-    if (diffInDays === 0) return 'Today';
-    if (diffInDays === 1) return '1 day ago';
-    if (diffInDays < 7) return `${diffInDays} days ago`;
-    
-    return date.toLocaleDateString();
+function formatPrice(price) {
+    // Convert to trillions format
+    const trillions = parseInt(price) / 1000000000000;
+    return `${trillions.toFixed(1)} Trillion Credits`;
 }
-
-// Load trending videos when page loads
-document.addEventListener('DOMContentLoaded', fetchTrendingVideos);
