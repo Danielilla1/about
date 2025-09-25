@@ -1,4 +1,4 @@
-/* styles.css (updated with premium benefits modal) */
+/* styles.css (updated with battle pass and scrollable premium UI) */
 * {
     margin: 0;
     padding: 0;
@@ -73,6 +73,50 @@ body {
 
 .nav-menu a:hover::after {
     width: 100%;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.level-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 215, 0, 0.15);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+    border-radius: 50px;
+    padding: 0.5rem 1rem;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+}
+
+.level-indicator::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    transform: translateX(-100%);
+    animation: shine 2s infinite;
+}
+
+@keyframes shine {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
+.level-text {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    color: #ffd700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
 }
 
 .premium-button-container {
@@ -616,6 +660,8 @@ body {
     box-shadow: 0 0 30px rgba(156, 39, 176, 0.5);
     border: 1px solid rgba(150, 70, 200, 0.3);
     animation: slideIn 0.3s;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .close {
@@ -642,45 +688,148 @@ body {
     color: #bb86fc;
 }
 
-.premium-benefits {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+/* Level Display */
+.level-display {
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.level-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.level-text {
+    font-family: 'Orbitron', sans-serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #ffd700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.level-progress {
+    font-size: 0.9rem;
+    color: #b0bec5;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700, #ff9800);
+    border-radius: 5px;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+/* Battle Pass Section */
+.battle-pass-section {
     margin-bottom: 2rem;
 }
 
-.benefit-card {
+.battle-pass-section h3 {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #bb86fc;
+}
+
+.battle-pass-section p {
+    color: #b0bec5;
+    margin-bottom: 1.5rem;
+    font-size: 0.9rem;
+}
+
+.battle-pass-container {
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 0.5rem;
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
-    padding: 1.5rem;
-    text-align: center;
-    transition: all 0.3s ease;
     border: 1px solid rgba(150, 70, 200, 0.3);
 }
 
-.benefit-card:hover {
+.battle-pass-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+}
+
+.battle-pass-item {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(150, 70, 200, 0.3);
+    position: relative;
+    overflow: hidden;
+}
+
+.battle-pass-item:hover {
     transform: translateY(-5px);
     background: rgba(255, 255, 255, 0.1);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 }
 
-.benefit-icon {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+.battle-pass-item.level-unlocked {
+    background: rgba(255, 215, 0, 0.15);
+    border-color: rgba(255, 215, 0, 0.5);
+    box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
 }
 
-.benefit-card h3 {
-    font-family: 'Orbitron', sans-serif;
+.battle-pass-item.level-unlocked::after {
+    content: '✓';
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #ffd700;
+    font-weight: bold;
     font-size: 1.2rem;
+}
+
+.battle-pass-item.level-unlocked .item-icon {
+    color: #ffd700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+}
+
+.battle-pass-item .item-icon {
+    font-size: 2rem;
     margin-bottom: 0.5rem;
-    color: #bb86fc;
+    transition: all 0.3s ease;
 }
 
-.benefit-card p {
+.battle-pass-item .item-level {
+    font-family: 'Orbitron', sans-serif;
     font-size: 0.9rem;
-    color: #b0bec5;
+    color: #ffd700;
+    margin-bottom: 0.3rem;
 }
 
+.battle-pass-item .item-name {
+    font-size: 0.8rem;
+    color: #b0bec5;
+    margin-bottom: 0.3rem;
+}
+
+.battle-pass-item .item-reward {
+    font-size: 0.7rem;
+    color: #9c27b0;
+    font-weight: 600;
+}
+
+/* Premium Pricing */
 .premium-pricing {
     text-align: center;
     margin-bottom: 2rem;
@@ -837,6 +986,11 @@ body {
         gap: 1rem;
     }
     
+    .nav-buttons {
+        width: 100%;
+        justify-content: space-between;
+    }
+    
     .hero-title {
         font-size: 2.5rem;
     }
@@ -874,5 +1028,9 @@ body {
     
     .premium-benefits {
         grid-template-columns: 1fr;
+    }
+    
+    .battle-pass-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
     }
 }
