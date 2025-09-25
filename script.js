@@ -1,4 +1,4 @@
-// script.js (updated with scrolling support)
+// script.js (updated with payment modal functionality)
 document.addEventListener('DOMContentLoaded', function() {
     // Create stars for background
     createStars();
@@ -51,30 +51,32 @@ document.addEventListener('DOMContentLoaded', function() {
             // Get planet data
             selectedPlanet = {
                 name: this.previousElementSibling.previousElementSibling.textContent,
+                icon: this.previousElementSibling.previousElementSibling.previousElementSibling.textContent,
                 price: this.getAttribute('data-price')
             };
             
             // Update modal content
             document.getElementById('modal-planet-name').textContent = selectedPlanet.name;
+            document.getElementById('modal-planet-icon').textContent = selectedPlanet.icon;
             document.getElementById('modal-planet-price').textContent = formatPrice(selectedPlanet.price);
             
             // Show modal
             modal.style.display = 'block';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling on body
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
         });
     });
     
     // Close modal when close button is clicked
     closeBtn.addEventListener('click', function() {
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling on body
+        document.body.style.overflow = 'auto'; // Enable scrolling
     });
     
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
         if (event.target === modal) {
             modal.style.display = 'none';
-            document.body.style.overflow = 'auto'; // Enable scrolling on body
+            document.body.style.overflow = 'auto'; // Enable scrolling
         }
     });
     
@@ -104,7 +106,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // Close modal
         modal.style.display = 'none';
-        document.body.style.overflow = 'auto'; // Enable scrolling on body
+        document.body.style.overflow = 'auto'; // Enable scrolling
         
         // Reset selections
         selectedPlanet = null;
