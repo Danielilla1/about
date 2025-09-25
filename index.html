@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube AI Assistant</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="logo">
+                <i class="fab fa-youtube"></i>
+                <h1>YouTube AI Assistant</h1>
+            </div>
+            <div class="header-right">
+                <div class="time-display" id="currentTime"></div>
+                <div class="user-icon">
+                    <i class="fas fa-user-circle"></i>
+                </div>
+            </div>
+        </header>
+        
+        <main class="main-content">
+            <div class="input-container">
+                <div class="input-wrapper">
+                    <input type="text" id="user-input" placeholder="Ask about YouTube videos...">
+                    <button id="submit-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="input-hint">
+                    <i class="fas fa-lightbulb"></i> Try: "Summarize this video" or "What are trending topics?"
+                </div>
+            </div>
+            
+            <div class="response-container">
+                <div class="response-wrapper">
+                    <div class="ai-avatar">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <div class="response-text" id="ai-response">
+                        Hello! I'm your YouTube AI assistant. Ask me anything about YouTube videos, trends, or content!
+                    </div>
+                </div>
+            </div>
+            
+            <div class="features">
+                <div class="feature-card">
+                    <i class="fas fa-play-circle"></i>
+                    <h3>Video Summarization</h3>
+                    <p>Get concise summaries of long videos</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Trend Analysis</h3>
+                    <p>Discover what's trending on YouTube</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-microphone"></i>
+                    <h3>Voice Search</h3>
+                    <p>Ask questions using voice commands</p>
+                </div>
+            </div>
+            
+            <div class="video-section">
+                <h2>Trending YouTube Videos</h2>
+                <div class="video-grid" id="trending-videos">
+                    <!-- Videos will be loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
