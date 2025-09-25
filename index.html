@@ -1,77 +1,196 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube AI Assistant</title>
+    <title>Nova - My Space Discord Experience</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <header class="header">
-            <div class="logo">
-                <i class="fab fa-youtube"></i>
-                <h1>YouTube AI Assistant</h1>
+    <!-- Animated background with stars -->
+    <div class="stars-container" id="stars"></div>
+    
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-brand">
+            <h1>NOVA</h1>
+        </div>
+        <ul class="nav-menu">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#discord">Discord</a></li>
+            <li><a href="#planets">Planets</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1 class="hero-title">Welcome to Nova</h1>
+            <p class="hero-subtitle">My cosmic journey through the Discord universe</p>
+            <div class="hero-buttons">
+                <button class="btn-primary" id="join-discord">Join My Discord</button>
+                <button class="btn-secondary" id="learn-more">Learn More</button>
             </div>
-            <div class="header-right">
-                <div class="time-display" id="currentTime"></div>
-                <div class="user-icon">
-                    <i class="fas fa-user-circle"></i>
+        </div>
+        <div class="planet-animation">
+            <div class="planet earth"></div>
+            <div class="planet mars"></div>
+            <div class="planet jupiter"></div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about-section">
+        <div class="about-content">
+            <h2 class="section-title">About Nova</h2>
+            <p>Hi there! I'm the creator of Nova - a space-themed Discord server where friends can explore the cosmos together. This is my personal space where I share my journey through the digital universe.</p>
+            <p>Join me as we discover new galaxies, share experiences, and build a community of like-minded explorers.</p>
+        </div>
+    </section>
+
+    <!-- Discord Section -->
+    <section id="discord" class="discord-section">
+        <h2 class="section-title">My Discord Server</h2>
+        <div class="discord-content">
+            <div class="discord-card">
+                <h3>Join Our Community</h3>
+                <p>Connect with friends, share ideas, and explore the universe together</p>
+                <button class="btn-primary">Join Now</button>
+            </div>
+            <div class="discord-card">
+                <h3>Special Events</h3>
+                <p>Monthly space-themed events and discussions</p>
+                <button class="btn-secondary">View Events</button>
+            </div>
+            <div class="discord-card">
+                <h3>Resources</h3>
+                <p>Tools, guides, and tutorials for space enthusiasts</p>
+                <button class="btn-primary">Explore</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Planets Section -->
+    <section id="planets" class="planets-section">
+        <div class="planets-wrapper">
+            <h2 class="section-title">Buy Your Own Planet</h2>
+            <p class="planets-subtitle">Realistic cosmic pricing for your digital assets</p>
+            <div class="planets-container">
+                <div class="planet-card mercury">
+                    <h3>Mercury</h3>
+                    <p>Closest to the Sun</p>
+                    <div class="planet-price">1.2 Trillion Credits</div>
+                    <button class="btn-primary buy-btn" data-planet="mercury" data-price="1200000000000">Buy Now</button>
+                </div>
+                <div class="planet-card venus">
+                    <h3>Venus</h3>
+                    <p>The hottest planet</p>
+                    <div class="planet-price">2.8 Trillion Credits</div>
+                    <button class="btn-primary buy-btn" data-planet="venus" data-price="2800000000000">Buy Now</button>
+                </div>
+                <div class="planet-card earth">
+                    <h3>Earth</h3>
+                    <p>Our home planet</p>
+                    <div class="planet-price">5.7 Trillion Credits</div>
+                    <button class="btn-primary buy-btn" data-planet="earth" data-price="5700000000000">Buy Now</button>
+                </div>
+                <div class="planet-card mars">
+                    <h3>Mars</h3>
+                    <p>The red planet</p>
+                    <div class="planet-price">3.1 Trillion Credits</div>
+                    <button class="btn-primary buy-btn" data-planet="mars" data-price="3100000000000">Buy Now</button>
+                </div>
+                <div class="planet-card jupiter">
+                    <h3>Jupiter</h3>
+                    <p>Largest planet in our solar system</p>
+                    <div class="planet-price">12.4 Trillion Credits</div>
+                    <button class="btn-primary buy-btn" data-planet="jupiter" data-price="12400000000000">Buy Now</button>
                 </div>
             </div>
-        </header>
-        
-        <main class="main-content">
-            <div class="input-container">
-                <div class="input-wrapper">
-                    <input type="text" id="user-input" placeholder="Ask about YouTube videos...">
-                    <button id="submit-btn">
-                        <i class="fas fa-search"></i>
-                    </button>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact-section">
+        <div class="contact-content">
+            <h2 class="section-title">Get in Touch</h2>
+            <p>Have questions about Nova or want to collaborate? Reach out!</p>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>Discord</h3>
+                    <p>Nova Community</p>
                 </div>
-                <div class="input-hint">
-                    <i class="fas fa-lightbulb"></i> Try: "Summarize this video" or "What are trending topics?"
+                <div class="contact-item">
+                    <h3>Email</h3>
+                    <p>contact@nova.space</p>
+                </div>
+                <div class="contact-item">
+                    <h3>Twitter</h3>
+                    <p>@nova_space</p>
                 </div>
             </div>
-            
-            <div class="response-container">
-                <div class="response-wrapper">
-                    <div class="ai-avatar">
-                        <i class="fas fa-robot"></i>
+        </div>
+    </section>
+
+    <!-- Payment Modal -->
+    <div id="payment-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-title">Complete Your Purchase</h2>
+            <div class="planet-preview">
+                <h3 id="modal-planet-name">Planet Name</h3>
+                <p id="modal-planet-price">Price</p>
+            </div>
+            <div class="payment-options">
+                <h3>Select Payment Method</h3>
+                <div class="payment-methods">
+                    <div class="payment-card" data-method="mastercard">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-details">
+                            <h4>MasterCard</h4>
+                            <p>Pay with your MasterCard</p>
+                        </div>
                     </div>
-                    <div class="response-text" id="ai-response">
-                        Hello! I'm your YouTube AI assistant. Ask me anything about YouTube videos, trends, or content!
+                    <div class="payment-card" data-method="paypal">
+                        <div class="payment-icon">🅿️</div>
+                        <div class="payment-details">
+                            <h4>PayPal</h4>
+                            <p>Pay with your PayPal account</p>
+                        </div>
+                    </div>
+                    <div class="payment-card" data-method="skrill">
+                        <div class="payment-icon">💰</div>
+                        <div class="payment-details">
+                            <h4>Skrill</h4>
+                            <p>Pay with your Skrill account</p>
+                        </div>
+                    </div>
+                    <div class="payment-card" data-method="bitcoin">
+                        <div class="payment-icon">₿</div>
+                        <div class="payment-details">
+                            <h4>Bitcoin</h4>
+                            <p>Pay with Bitcoin</p>
+                        </div>
                     </div>
                 </div>
+                <button class="btn-primary" id="confirm-payment">Confirm Payment</button>
             </div>
-            
-            <div class="features">
-                <div class="feature-card">
-                    <i class="fas fa-play-circle"></i>
-                    <h3>Video Summarization</h3>
-                    <p>Get concise summaries of long videos</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-chart-line"></i>
-                    <h3>Trend Analysis</h3>
-                    <p>Discover what's trending on YouTube</p>
-                </div>
-                <div class="feature-card">
-                    <i class="fas fa-microphone"></i>
-                    <h3>Voice Search</h3>
-                    <p>Ask questions using voice commands</p>
-                </div>
-            </div>
-            
-            <div class="video-section">
-                <h2>Trending YouTube Videos</h2>
-                <div class="video-grid" id="trending-videos">
-                    <!-- Videos will be loaded here -->
-                </div>
-            </div>
-        </main>
+        </div>
     </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>&copy; 2023 Nova. All rights reserved.</p>
+        <div class="social-icons">
+            <a href="#" aria-label="Discord">🎮</a>
+            <a href="#" aria-label="Twitter">🐦</a>
+            <a href="#" aria-label="GitHub">💻</a>
+        </div>
+    </footer>
 
     <script src="script.js"></script>
 </body>
