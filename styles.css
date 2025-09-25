@@ -1,4 +1,4 @@
-/* styles.css (updated with battle pass and scrollable premium UI) */
+/* styles.css */
 * {
     margin: 0;
     padding: 0;
@@ -6,317 +6,173 @@
 }
 
 body {
-    font-family: 'Exo 2', sans-serif;
-    background: linear-gradient(135deg, #1a0a2e 0%, #2d0b4d 100%);
-    color: #fff;
-    overflow-x: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c);
     min-height: 100vh;
-    position: relative;
-}
-
-/* Navigation */
-.navbar {
-    position: fixed;
-    top: 0;
-    width: 100%;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    padding: 1.5rem 5%;
-    z-index: 1000;
-    background: rgba(26, 10, 46, 0.8);
-    backdrop-filter: blur(10px);
-    border-bottom: 1px solid rgba(150, 70, 200, 0.3);
-    animation: fadeInDown 1s ease-out;
+    padding: 20px;
 }
 
-.nav-brand h1 {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 900;
-    font-size: 1.8rem;
-    background: linear-gradient(to right, #9c27b0, #e91e63);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    letter-spacing: 1px;
-}
-
-.nav-menu {
-    display: flex;
-    list-style: none;
-    gap: 2rem;
-}
-
-.nav-menu a {
-    color: #e0f7fa;
-    text-decoration: none;
-    font-weight: 300;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
+.navbar-container {
     position: relative;
-    padding: 0.5rem 0;
-}
-
-.nav-menu a:hover {
-    color: #bb86fc;
-}
-
-.nav-menu a::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: linear-gradient(to right, #9c27b0, #e91e63);
-    transition: width 0.3s ease;
-}
-
-.nav-menu a:hover::after {
     width: 100%;
+    max-width: 800px;
+    z-index: 10;
 }
 
-.nav-buttons {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-}
-
-.level-indicator {
+.navbar-trigger {
     display: flex;
     align-items: center;
     justify-content: center;
-    background: rgba(255, 215, 0, 0.15);
-    border: 1px solid rgba(255, 215, 0, 0.3);
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
     border-radius: 50px;
-    padding: 0.5rem 1rem;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
-}
-
-.level-indicator::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    transform: translateX(-100%);
-    animation: shine 2s infinite;
-}
-
-@keyframes shine {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
-}
-
-.level-text {
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    color: #ffd700;
-    text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
-}
-
-.premium-button-container {
-    display: flex;
-    align-items: center;
-}
-
-.btn-premium {
-    padding: 0.8rem 1.5rem;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
+    padding: 15px 30px;
     cursor: pointer;
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transform: translateZ(0);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(45deg, #ffd700, #ff9800);
-    color: #000;
-    background-size: 200% 200%;
-    animation: gradientShift 3s ease infinite;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    position: relative;
-    overflow: hidden;
-    border: 2px solid rgba(255, 215, 0, 0.5);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    width: 180px;
+    margin: 0 auto;
 }
 
-.btn-premium:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
-    animation: none;
-    border-color: rgba(255, 215, 0, 0.8);
+.navbar-trigger:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
-.btn-premium::after {
-    content: '';
+.navbar-trigger span {
+    color: white;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.navbar-trigger i {
+    color: white;
+    font-size: 24px;
+}
+
+.navbar-reveal {
     position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: 0.5s;
-    z-index: -1;
-}
-
-.btn-premium:hover::after {
-    left: 100%;
-}
-
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-/* Stars Background */
-.stars-container {
-    position: fixed;
-    top: 0;
+    top: 100%;
     left: 0;
     width: 100%;
-    height: 100%;
-    z-index: -1;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 20px;
+    margin-top: 20px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    transform: translateY(-20px);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     overflow: hidden;
 }
 
-.star {
-    position: absolute;
-    background-color: #fff;
-    border-radius: 50%;
-    animation: twinkle var(--duration, 5s) infinite ease-in-out;
-    opacity: var(--opacity, 0.8);
-    animation: twinkle var(--duration, 5s) infinite ease-in-out, moveStar var(--move-duration, 10s) infinite linear;
+.navbar-reveal.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
 }
 
-/* Movement animation for stars */
-@keyframes moveStar {
-    0% {
-        transform: translate(0, 0);
-    }
-    25% {
-        transform: translate(var(--move-x, 0px), var(--move-y, 0px));
-    }
-    50% {
-        transform: translate(calc(var(--move-x, 0px) * 2), calc(var(--move-y, 0px) * 2));
-    }
-    75% {
-        transform: translate(var(--move-x, 0px), var(--move-y, 0px));
-    }
-    100% {
-        transform: translate(0, 0);
-    }
+.navbar-content {
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    flex-wrap: wrap;
 }
 
-/* Hero Section */
-.hero {
-    min-height: 100vh;
+.nav-icon {
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    text-align: center;
-    padding: 0 2rem;
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-title {
-    font-family: 'Orbitron', sans-serif;
-    font-size: 4rem;
-    font-weight: 900;
-    margin-bottom: 1rem;
-    background: linear-gradient(to right, #9c27b0, #e91e63, #9c27b0);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 20px rgba(156, 39, 176, 0.5);
-    animation: fadeInUp 1s ease-out;
-}
-
-.hero-subtitle {
-    font-size: 1.5rem;
-    margin-bottom: 2rem;
-    max-width: 700px;
-    animation: fadeInUp 1s ease-out 0.3s both;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 1.5rem;
-    animation: fadeInUp 1s ease-out 0.6s both;
-}
-
-.btn-primary, .btn-secondary {
-    padding: 1rem 2.5rem;
-    border: none;
-    border-radius: 50px;
-    font-family: 'Orbitron', sans-serif;
-    font-weight: 700;
-    font-size: 1rem;
-    cursor: pointer;
+    text-decoration: none;
+    color: white;
     transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    transform: translateZ(0);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-    background: linear-gradient(45deg, #9c27b0, #e91e63);
-    color: #fff;
+    padding: 15px;
+    border-radius: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    min-width: 100px;
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
 }
 
-.btn-secondary {
-    background: transparent;
-    border: 2px solid #bb86fc;
-    color: #bb86fc;
-}
-
-.btn-primary:hover, .btn-secondary:hover {
+.nav-icon:hover {
     transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(156, 39, 176, 0.4);
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
 }
 
-.btn-primary::after, .btn-secondary::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-    transition: 0.5s;
-    z-index: -1;
+.nav-icon i {
+    font-size: 32px;
+    margin-bottom: 10px;
 }
 
-.btn-primary:hover::after, .btn-secondary:hover::after {
-    left: 100%;
+.nav-icon span {
+    font-weight: 500;
+    font-size: 14px;
 }
 
-/* Button click effect */
-.btn-primary:active, .btn-secondary:active {
-    animation: buttonClick 0.3s ease;
-    transform: scale(0.95);
+/* Responsive design */
+@media (max-width: 768px) {
+    .navbar-trigger {
+        padding: 12px 25px;
+        width: 150px;
+    }
+    
+    .navbar-trigger span {
+        font-size: 16px;
+    }
+    
+    .navbar-content {
+        gap: 15px;
+    }
+    
+    .nav-icon {
+        min-width: 80px;
+        padding: 12px;
+    }
+    
+    .nav-icon i {
+        font-size: 24px;
+    }
+    
+    .nav-icon span {
+        font-size: 12px;
+    }
 }
 
-@keyframes buttonClick {
-    0% { transform: scale(1); }
-    50% { transform: scale(0.95); }
-    100% { transform: scale(1); }
+@media (max-width: 480px) {
+    .navbar-trigger {
+        padding: 10px 20px;
+        width: 130px;
+    }
+    
+    .navbar-trigger span {
+        font-size: 14px;
+    }
+    
+    .navbar-content {
+        gap: 10px;
+    }
+    
+    .nav-icon {
+        min-width: 70px;
+        padding: 10px;
+    }
+    
+    .nav-icon i {
+        font-size: 20px;
+    }
+    
+    .nav-icon span {
+        font-size: 10px;
+    }
 }
-
-/* Travel effect for buttons */
-.travel-effect {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
