@@ -1,4 +1,4 @@
-/* styles.css (updated with scrolling support) */
+/* styles.css (updated with payment modal) */
 * {
     margin: 0;
     padding: 0;
@@ -455,6 +455,12 @@ body {
     margin-bottom: 1.5rem;
 }
 
+.planet-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    display: block;
+}
+
 .planet-price {
     font-family: 'Orbitron', sans-serif;
     font-size: 1.2rem;
@@ -534,7 +540,6 @@ body {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.7);
     animation: fadeIn 0.3s;
-    overflow-y: auto; /* Enable scrolling */
 }
 
 .modal-content {
@@ -548,9 +553,6 @@ body {
     box-shadow: 0 0 30px rgba(156, 39, 176, 0.5);
     border: 1px solid rgba(150, 70, 200, 0.3);
     animation: slideIn 0.3s;
-    /* Allow scrolling within modal content */
-    max-height: 90vh;
-    overflow-y: auto;
 }
 
 .close {
@@ -581,6 +583,11 @@ body {
     background: rgba(255, 255, 255, 0.05);
     border-radius: 15px;
     border: 1px solid rgba(150, 70, 200, 0.3);
+}
+
+.planet-preview .planet-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
 }
 
 .planet-preview h3 {
