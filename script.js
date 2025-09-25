@@ -1,7 +1,59 @@
-// script.js (updated with premium benefits modal functionality)
+// script.js (updated with battle pass and level system)
 document.addEventListener('DOMContentLoaded', function() {
     // Create stars for background
     createStars();
+    
+    // Initialize level system
+    let currentLevel = 1;
+    const maxLevel = 10;
+    
+    // Update level display
+    function updateLevelDisplay() {
+        document.getElementById('current-level').textContent = currentLevel;
+        document.getElementById('modal-level').textContent = currentLevel;
+        
+        // Update progress bar
+        const progress = (currentLevel / maxLevel) * 100;
+        document.getElementById('level-progress').textContent = Math.round(progress);
+        document.getElementById('progress-fill').style.width = `${progress}%`;
+    }
+    
+    // Initialize battle pass items
+    function initializeBattlePass() {
+        const battlePassGrid = document.querySelector('.battle-pass-grid');
+        battlePassGrid.innerHTML = '';
+        
+        const rewards = [
+            { icon: '⭐', name: 'Special Badge', reward: 'Exclusive badge' },
+            { icon: '🚀', name: 'Premium Access', reward: 'Early access to events' },
+            { icon: '🌌', name: 'Custom Avatar', reward: 'Custom profile avatar' },
+            { icon: '🏆', name: 'VIP Room', reward: 'Access to VIP channels' },
+            { icon: '💎', name: 'Gold Star', reward: 'Special gold star' },
+            { icon: '🌙', name: 'Night Mode', reward: 'Dark theme for life' },
+            { icon: '🌠', name: 'Cosmic Sound', reward: 'Special sound effects' },
+            { icon: '🌠', name: 'Space Theme', reward: 'Cosmic theme for profile' },
+            { icon: '🎁', name: 'Special Gift', reward: 'Monthly gift package' },
+            { icon: '👑', name: 'Royal Status', reward: 'Royal title in server' }
+        ];
+        
+        for (let i = 1; i <= maxLevel; i++) {
+            const item = document.createElement('div');
+            item.className = 'battle-pass-item';
+            item.innerHTML = `
+                <div class="item-icon">${rewards[i-1].icon}</div>
+                <div class="item-level">LEVEL ${i}</div>
+                <div class="item-name">${rewards[i-1].name}</div>
+                <div class="item-reward">${rewards[i-1].reward}</div>
+            `;
+            
+            // Mark unlocked levels
+            if (i <= currentLevel) {
+                item.classList.add('level-unlocked');
+            }
+            
+            battlePassGrid.appendChild(item);
+        }
+    }
     
     // Smooth scrolling for navigation links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -162,6 +214,10 @@ document.addEventListener('DOMContentLoaded', function() {
     // Open premium modal when premium button is clicked
     premiumButtons.forEach(button => {
         button.addEventListener('click', function() {
+            // Initialize battle pass and level display
+            initializeBattlePass();
+            updateLevelDisplay();
+            
             // Show premium modal
             premiumModal.style.display = 'block';
             document.body.style.overflow = 'hidden'; // Prevent scrolling
@@ -214,6 +270,9 @@ document.addEventListener('DOMContentLoaded', function() {
         selectedPremiumMethod = null;
         premiumPaymentCards.forEach(c => c.classList.remove('selected'));
     });
+    
+    // Initialize level display
+    updateLevelDisplay();
 });
 
 function createStars() {
