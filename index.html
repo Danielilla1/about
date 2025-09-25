@@ -1,4 +1,4 @@
-​<!-- index.html -->
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -24,6 +24,9 @@
             <li><a href="#planets">Planets</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
+        <div class="premium-button-container">
+            <button class="btn-premium" id="premium-nav-btn">PREMIUM</button>
+        </div>
     </nav>
 
     <!-- Hero Section -->
@@ -34,6 +37,7 @@
             <div class="hero-buttons">
                 <button class="btn-primary" id="join-discord">Join My Discord</button>
                 <button class="btn-secondary" id="learn-more">Learn More</button>
+                <button class="btn-premium" id="premium-hero-btn">PREMIUM</button>
             </div>
         </div>
         <div class="planet-animation">
@@ -140,6 +144,75 @@
             </div>
         </div>
     </section>
+
+    <!-- Premium Benefits Modal -->
+    <div id="premium-modal" class="modal premium-modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 class="modal-title">Premium Membership</h2>
+            <div class="premium-benefits">
+                <div class="benefit-card">
+                    <div class="benefit-icon">⭐</div>
+                    <h3>Exclusive Access</h3>
+                    <p>Get access to special areas and content not available to regular members</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🚀</div>
+                    <h3>Priority Support</h3>
+                    <p>Receive faster responses to your questions and issues</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🌌</div>
+                    <h3>Custom Planet</h3>
+                    <p>Own a unique planet in our cosmic universe with special features</p>
+                </div>
+                <div class="benefit-card">
+                    <div class="benefit-icon">🏆</div>
+                    <h3>Special Events</h3>
+                    <p>Access to exclusive virtual events and community gatherings</p>
+                </div>
+            </div>
+            <div class="premium-pricing">
+                <h3>Membership Plan</h3>
+                <div class="price">$9.99<span>/month</span></div>
+                <p>One-time payment for lifetime access to all premium features</p>
+            </div>
+            <div class="payment-options">
+                <h3>Select Payment Method</h3>
+                <div class="payment-methods">
+                    <div class="payment-card" data-method="mastercard">
+                        <div class="payment-icon">💳</div>
+                        <div class="payment-details">
+                            <h4>MasterCard</h4>
+                            <p>Pay with your MasterCard</p>
+                        </div>
+                    </div>
+                    <div class="payment-card" data-method="paypal">
+                        <div class="payment-icon">🅿️</div>
+                        <div class="payment-details">
+                            <h4>PayPal</h4>
+                            <p>Pay with your PayPal account</p>
+                        </div>
+                    </div>
+                    <div class="payment-card" data-method="skrill">
+                        <div class="payment-icon">💰</div>
+                        <div class="payment-details">
+                            <h4>Skrill</h4>
+                            <p>Pay with your Skrill account</p>
+                        </div>
+                    </div>
+                    <div class="payment-card" data-method="bitcoin">
+                        <div class="payment-icon">₿</div>
+                        <div class="payment-details">
+                            <h4>Bitcoin</h4>
+                            <p>Pay with Bitcoin</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn-primary" id="confirm-premium">Subscribe Now</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Payment Modal -->
     <div id="payment-modal" class="modal">
