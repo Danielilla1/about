@@ -1,4 +1,4 @@
-// script.js (updated with payment modal functionality)
+// script.js (updated with premium benefits modal functionality)
 document.addEventListener('DOMContentLoaded', function() {
     // Create stars for background
     createStars();
@@ -34,7 +34,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Payment modal functionality
-    const modal = document.getElementById('payment-modal');
+    const paymentModal = document.getElementById('payment-modal');
     const closeBtn = document.querySelector('.close');
     const buyButtons = document.querySelectorAll('.buy-btn');
     const paymentCards = document.querySelectorAll('.payment-card');
@@ -61,21 +61,21 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('modal-planet-price').textContent = formatPrice(selectedPlanet.price);
             
             // Show modal
-            modal.style.display = 'block';
+            paymentModal.style.display = 'block';
             document.body.style.overflow = 'hidden'; // Prevent scrolling
         });
     });
     
     // Close modal when close button is clicked
     closeBtn.addEventListener('click', function() {
-        modal.style.display = 'none';
+        paymentModal.style.display = 'none';
         document.body.style.overflow = 'auto'; // Enable scrolling
     });
     
     // Close modal when clicking outside
     window.addEventListener('click', function(event) {
-        if (event.target === modal) {
-            modal.style.display = 'none';
+        if (event.target === paymentModal) {
+            paymentModal.style.display = 'none';
             document.body.style.overflow = 'auto'; // Enable scrolling
         }
     });
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', function() {
         alert(`Payment confirmed with ${selectedMethod.charAt(0).toUpperCase() + selectedMethod.slice(1)}! Your planet is on its way.`);
         
         // Close modal
-        modal.style.display = 'none';
+        paymentModal.style.display = 'none';
         document.body.style.overflow = 'auto'; // Enable scrolling
         
         // Reset selections
@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Button click effects
-    const buttons = document.querySelectorAll('.btn-primary, .btn-secondary');
+    const buttons = document.querySelectorAll('.btn-primary, .btn-secondary, .btn-premium');
     buttons.forEach(button => {
         button.addEventListener('click', function(e) {
             // Create travel effect
@@ -148,6 +148,71 @@ document.addEventListener('DOMContentLoaded', function() {
                 ripple.remove();
             }, 600);
         });
+    });
+    
+    // Premium modal functionality
+    const premiumModal = document.getElementById('premium-modal');
+    const premiumButtons = document.querySelectorAll('.btn-premium');
+    const premiumCloseBtn = document.querySelector('.premium-modal .close');
+    const confirmPremiumBtn = document.getElementById('confirm-premium');
+    const premiumPaymentCards = document.querySelectorAll('.premium-modal .payment-card');
+    
+    let selectedPremiumMethod = null;
+    
+    // Open premium modal when premium button is clicked
+    premiumButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Show premium modal
+            premiumModal.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling
+        });
+    });
+    
+    // Close premium modal when close button is clicked
+    premiumCloseBtn.addEventListener('click', function() {
+        premiumModal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scrolling
+    });
+    
+    // Close premium modal when clicking outside
+    window.addEventListener('click', function(event) {
+        if (event.target === premiumModal) {
+            premiumModal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // Enable scrolling
+        }
+    });
+    
+    // Select premium payment method
+    premiumPaymentCards.forEach(card => {
+        card.addEventListener('click', function() {
+            // Remove selected class from all cards
+            premiumPaymentCards.forEach(c => c.classList.remove('selected'));
+            
+            // Add selected class to clicked card
+            this.classList.add('selected');
+            
+            // Set selected method
+            selectedPremiumMethod = this.getAttribute('data-method');
+        });
+    });
+    
+    // Confirm premium subscription
+    confirmPremiumBtn.addEventListener('click', function() {
+        if (!selectedPremiumMethod) {
+            alert('Please select a payment method');
+            return;
+        }
+        
+        // Show confirmation
+        alert(`Premium subscription confirmed with ${selectedPremiumMethod.charAt(0).toUpperCase() + selectedPremiumMethod.slice(1)}! Enjoy all premium benefits.`);
+        
+        // Close modal
+        premiumModal.style.display = 'none';
+        document.body.style.overflow = 'auto'; // Enable scrolling
+        
+        // Reset selections
+        selectedPremiumMethod = null;
+        premiumPaymentCards.forEach(c => c.classList.remove('selected'));
     });
 });
 
